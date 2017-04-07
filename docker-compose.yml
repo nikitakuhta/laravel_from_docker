@@ -1,0 +1,29 @@
+#load_balancer:
+#    image: tutum/haproxy
+#    links:
+#        - web
+#    ports:
+#        - "80:80"
+
+cache:
+    image: redis
+
+database:
+    image: tutum/mongodb    
+
+web:
+    #image: richarvey/nginx-php-fpm
+    build: .        
+    dockerfile: web.docker
+    links:
+        - database
+        - cache
+    volumes:
+        - ./:/var/www
+    environment:
+        - APP_ENV=local
+        - DB_DATABASE=laravel 
+        - DB_PASSWORD=SuperSecretPassword123
+        - VIRTUAL_HOST=localhost
+    ports:
+        - "80:80"
