@@ -6,24 +6,24 @@
 #        - "80:80"
 
 cache:
-    image: redis
+  image: redis
 
-database:
-    image: tutum/mongodb    
+mongo:
+  image: mongo    
 
 web:
-    #image: richarvey/nginx-php-fpm
-    build: .        
-    dockerfile: web.docker
-    links:
-        - database
-        - cache
-    volumes:
-        - ./:/var/www
-    environment:
-        - APP_ENV=local
-        - DB_DATABASE=laravel 
-        - DB_PASSWORD=SuperSecretPassword123
-        - VIRTUAL_HOST=localhost
-    ports:
-        - "80:80"
+  #image: richarvey/nginx-php-fpm
+  build: .        
+  dockerfile: docker/web.dockerfile
+  links:
+    - mongo
+    - cache
+  volumes:
+    - ./:/var/www
+  environment:
+    - APP_ENV=local
+    - DB_DATABASE=laravel 
+    - DB_PASSWORD=SuperSecretPassword123
+    - VIRTUAL_HOST=localhost
+  ports:
+    - "80:80"
